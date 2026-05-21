@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --primary-bg: #0e0f12;
+  --secondary-bg: #1a1d22;
+  --surface-card: #252a31;
+  --main-text: #f3f1ec;
+  --secondary-text: #9aa3ad;
+  --primary-accent: #d94b2b;
+  --secondary-accent: #3b5bdb;
+  --premium-highlight: #c97b48;
+  --divider: #363d46;
+  --subtle-neutral: #d8d1c5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(59, 91, 219, 0.12), transparent 24%),
+    radial-gradient(circle at top right, rgba(217, 75, 43, 0.08), transparent 22%),
+    linear-gradient(180deg, #0e0f12 0%, #1a1d22 100%);
+  color: var(--main-text);
+  font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(circle at 18% 16%, rgba(243, 241, 236, 0.18) 0, transparent 2px),
+    radial-gradient(circle at 82% 28%, rgba(59, 91, 219, 0.18) 0, transparent 1.5px),
+    radial-gradient(circle at 64% 78%, rgba(201, 123, 72, 0.14) 0, transparent 2px);
+  background-size: 150px 150px, 210px 210px, 240px 240px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*::selection {
+  background: rgba(217, 75, 43, 0.88);
+  color: #f3f1ec;
+}
+
+img,
+video {
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(59, 91, 219, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 91, 219, 0.16) 1px, transparent 1px),
+    linear-gradient(rgba(59, 91, 219, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 91, 219, 0.07) 1px, transparent 1px);
+  background-position: 0 0, 0 0, 34px 34px, 34px 34px;
+  background-size: 68px 68px, 68px 68px, 17px 17px, 17px 17px;
+}
+
+.steel-panel {
+  background:
+    radial-gradient(circle at top right, rgba(217, 75, 43, 0.16), transparent 26%),
+    linear-gradient(145deg, rgba(37, 42, 49, 0.96), rgba(26, 29, 34, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.26),
+    0 24px 80px rgba(0, 0, 0, 0.34);
+}
+
+.scan-line {
+  background: linear-gradient(90deg, transparent, rgba(59, 91, 219, 0.18), transparent);
+  filter: blur(1px);
+  animation: scan-horizontal 9s linear infinite;
+}
+
+@keyframes scan-horizontal {
+  0% {
+    transform: translateX(-18%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(140%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0e0f12;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 2px solid #0e0f12;
+  background: linear-gradient(180deg, rgba(59, 91, 219, 0.78), rgba(217, 75, 43, 0.78));
+}
