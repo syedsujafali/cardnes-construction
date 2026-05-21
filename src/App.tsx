@@ -51,12 +51,6 @@ const heroVideo =
 const heroPoster =
   "https://images.pexels.com/photos/5511066/pexels-photo-5511066.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600";
 
-const heroStats = [
-  { value: 18, suffix: "+", label: "years delivering architect-led construction" },
-  { value: 220, suffix: "+", label: "premium homes, interiors, and commercial projects completed" },
-  { value: 97, suffix: "%", label: "of new work generated through referrals and repeat clients" },
-];
-
 const services: Service[] = [ { title: "Luxury Remodeling", strap: "Whole-home transformations", description: "Structural upgrades, plan reconfiguration, finish refinement, and detailed sequencing for residences that demand calm execution.", image: "https://images.pexels.com/photos/7045316/pexels-photo-7045316.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "remodel", }, { title: "Custom Construction", strap: "Ground-up architectural builds", description: "From early site mobilization to final handover, we construct one-of-a-kind residences with structural rigor and material clarity.", image: "https://images.pexels.com/photos/5511066/pexels-photo-5511066.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "custom", }, { title: "Commercial Buildouts", strap: "Workplaces, retail, hospitality", description: "Premium tenant improvements and flagship environments shaped by clean detailing, engineering discipline, and schedule control.", image: "https://images.pexels.com/photos/20578678/pexels-photo-20578678.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "commercial", }, { title: "Kitchen Renovation", strap: "Millwork and stone precision", description: "Performance kitchens coordinated around cabinetry tolerances, concealed services, premium surfaces, and warm architectural lighting.", image: "https://images.pexels.com/photos/6489127/pexels-photo-6489127.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "kitchen", }, { title: "Bathroom Renovation", strap: "Spa-grade technical detailing", description: "Waterproof assemblies, large-format stone, custom vanities, and precise fixture integration finished to a luxury hospitality standard.", image: "https://images.pexels.com/photos/8082223/pexels-photo-8082223.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "bathroom", }, { title: "Concrete & Masonry", strap: "Texture, structure, permanence", description: "Monolithic pours, retaining systems, architectural concrete, and masonry packages that feel as resolved as the spaces around them.", image: "https://images.pexels.com/photos/4534504/pexels-photo-4534504.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "concrete", }, { title: "Exterior Construction", strap: "Envelope and site work", description: "Facades, terraces, cladding, glazing interfaces, and exterior assemblies designed for durability, proportion, and environmental performance.", image: "https://images.pexels.com/photos/11312129/pexels-photo-11312129.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "exterior", }, { title: "Structural Repairs", strap: "Engineer-aligned remediation", description: "Framing correction, slab reinforcement, steel intervention, and hidden structural recovery carried out without losing finish quality.", image: "https://images.pexels.com/photos/6473982/pexels-photo-6473982.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "structural", }, { title: "Flooring", strap: "Gallery-grade surfaces", description: "Wide-plank wood, stone, porcelain, and poured systems installed with disciplined transitions, flatness control, and exact alignment.", image: "https://images.pexels.com/photos/7045316/pexels-photo-7045316.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "flooring", }, { title: "Painting & Finishing", strap: "The final construction layer", description: "Skim coats, mineral paints, staining, touch-up, and finish calibration that turn a completed build into a complete atmosphere.", image: "https://images.pexels.com/photos/6474129/pexels-photo-6474129.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "finish", }, ];
 
 const projects: Project[] = [
@@ -190,39 +184,6 @@ const testimonials: Testimonial[] = [
     project: "Axis Loft Reinforcement",
   },
 ];
-
-function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(reduceMotion ? value : 0);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setDisplay(value);
-      return;
-    }
-
-    let frame = 0;
-    const start = performance.now();
-    const duration = 1400;
-
-    const tick = (time: number) => {
-      const progress = Math.min((time - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(value * eased));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [reduceMotion, value]);
-
-  return (
-    <span>
-      {display}
-      {suffix}
-    </span>
-  );
-}
 
 function SectionKicker({ children }: { children: string }) {
   return (
