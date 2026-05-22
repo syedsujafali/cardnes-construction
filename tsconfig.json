@@ -21,6 +21,9 @@
       "@/*": ["src/*"]
     },
 
+    /* Silence deprecation about baseUrl for TypeScript 6.x */
+    "ignoreDeprecations": "6.0",
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

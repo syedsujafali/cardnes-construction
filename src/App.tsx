@@ -9,6 +9,7 @@ import img5 from "../cardnes/5.png";
 import img6 from "../cardnes/6.png";
 import img7 from "../cardnes/7.png";
 import heroVideoLocal from "../cardnes/hero-video-1080p.mp4";
+import heroImageMobile from "../cardnes/about-2.png";
 
 import proj1 from "../cardnes/69a5f01d5a52f40d6923525a.jpg";
 import proj2 from "../cardnes/69a5f01d9c1499eefb44404a.jpg";
@@ -437,8 +438,9 @@ export default function App() {
       <main className="relative z-10">
         <section id="home" className="relative isolate min-h-screen overflow-hidden border-b border-[#D4C4B0]">
           <div className="absolute inset-0">
+            {/* Video for medium+ screens, image for mobile to improve performance and readability */}
             <video
-              className="h-full w-full object-cover"
+              className="hidden md:block h-full w-full object-cover"
               src={heroVideo}
               autoPlay
               muted
@@ -447,7 +449,14 @@ export default function App() {
               preload="metadata"
               style={{ transform: reduceMotion ? undefined : `translateY(${scrollY * 0.08}px)` }}
             />
+            <img
+              className="block md:hidden h-full w-full object-cover"
+              src={heroImageMobile}
+              alt="Construction site"
+            />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(251,247,240,0.1),rgba(251,247,240,0.25)_68%,rgba(251,247,240,0.4))]" />
+            {/* Darker overlay on small screens to improve text contrast over the video */}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.62),rgba(0,0,0,0.36)_68%,rgba(0,0,0,0.26))] md:hidden" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,rgba(200,90,45,0.12),transparent_22%)]" />
 
             <motion.div
@@ -467,7 +476,7 @@ export default function App() {
               <div className="space-y-10">
                 <Reveal className="max-w-4xl space-y-8 sm:space-y-10 lg:space-y-16">
                   <div className="space-y-5">
-                    <h1 className="font-display text-[clamp(2.75rem,12vw,9.5rem)] leading-[0.95] sm:leading-[0.9] tracking-[-0.04em] text-balance text-black drop-shadow-lg">
+                    <h1 className="font-display text-[clamp(2.75rem,12vw,9.5rem)] leading-[0.95] sm:leading-[0.9] tracking-[-0.04em] text-balance text-white md:text-black drop-shadow-[0_8px_28px_rgba(0,0,0,0.6)]">
                       Residential And Commercial Construction Across New Jersey
                     </h1>
                   </div>
