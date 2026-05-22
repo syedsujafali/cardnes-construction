@@ -1,29 +1,30 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { type PointerEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "./utils/cn";
+import img1 from "../cardnes/1.png";
+import img2 from "../cardnes/2.png";
+import img3 from "../cardnes/3.png";
+import img4 from "../cardnes/4.png";
+import img5 from "../cardnes/5.png";
+import img6 from "../cardnes/6.png";
+import img7 from "../cardnes/7.png";
+import heroVideoLocal from "../cardnes/hero-video-1080p.mp4";
 
-type ServiceIconType =
-  | "remodel"
-  | "custom"
-  | "commercial"
-  | "kitchen"
-  | "bathroom"
-  | "concrete"
-  | "exterior"
-  | "structural"
-  | "flooring"
-  | "finish";
+import proj1 from "../cardnes/69a5f01d5a52f40d6923525a.jpg";
+import proj2 from "../cardnes/69a5f01d9c1499eefb44404a.jpg";
+import proj3 from "../cardnes/69a5f01dc1cc2f35df9631a2.jpg";
+import proj4 from "../cardnes/69a5f01dc1cc2f5cc99631a1.jpg";
+import proj5 from "../cardnes/69a5f01dc1cc2fdd7a9631a0.jpg";
+import proj6 from "../cardnes/69a5f01dc6b5e933a9f786cd.jpg";
 
 type ProjectFilter = "All" | "Residences" | "Commercial" | "Interiors" | "Structural";
 type ProjectCategory = Exclude<ProjectFilter, "All">;
 
 type Service = {
   title: string;
-  strap: string;
-  description: string;
   image: string;
-  icon: ServiceIconType;
 };
+
 
 type Project = {
   title: string;
@@ -46,12 +47,18 @@ type Testimonial = {
 
 const filters: ProjectFilter[] = ["All", "Residences", "Commercial", "Interiors", "Structural"];
 
-const heroVideo =
-  "https://videos.pexels.com/video-files/33070695/14096107_3840_2160_30fps.mp4";
-const heroPoster =
-  "https://images.pexels.com/photos/5511066/pexels-photo-5511066.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600";
+const heroVideo = heroVideoLocal;
 
-const services: Service[] = [ { title: "Luxury Remodeling", strap: "Whole-home transformations", description: "Structural upgrades, plan reconfiguration, finish refinement, and detailed sequencing for residences that demand calm execution.", image: "https://images.pexels.com/photos/7045316/pexels-photo-7045316.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "remodel", }, { title: "Custom Construction", strap: "Ground-up architectural builds", description: "From early site mobilization to final handover, we construct one-of-a-kind residences with structural rigor and material clarity.", image: "https://images.pexels.com/photos/5511066/pexels-photo-5511066.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "custom", }, { title: "Commercial Buildouts", strap: "Workplaces, retail, hospitality", description: "Premium tenant improvements and flagship environments shaped by clean detailing, engineering discipline, and schedule control.", image: "https://images.pexels.com/photos/20578678/pexels-photo-20578678.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "commercial", }, { title: "Kitchen Renovation", strap: "Millwork and stone precision", description: "Performance kitchens coordinated around cabinetry tolerances, concealed services, premium surfaces, and warm architectural lighting.", image: "https://images.pexels.com/photos/6489127/pexels-photo-6489127.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "kitchen", }, { title: "Bathroom Renovation", strap: "Spa-grade technical detailing", description: "Waterproof assemblies, large-format stone, custom vanities, and precise fixture integration finished to a luxury hospitality standard.", image: "https://images.pexels.com/photos/8082223/pexels-photo-8082223.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "bathroom", }, { title: "Concrete & Masonry", strap: "Texture, structure, permanence", description: "Monolithic pours, retaining systems, architectural concrete, and masonry packages that feel as resolved as the spaces around them.", image: "https://images.pexels.com/photos/4534504/pexels-photo-4534504.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "concrete", }, { title: "Exterior Construction", strap: "Envelope and site work", description: "Facades, terraces, cladding, glazing interfaces, and exterior assemblies designed for durability, proportion, and environmental performance.", image: "https://images.pexels.com/photos/11312129/pexels-photo-11312129.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "exterior", }, { title: "Structural Repairs", strap: "Engineer-aligned remediation", description: "Framing correction, slab reinforcement, steel intervention, and hidden structural recovery carried out without losing finish quality.", image: "https://images.pexels.com/photos/6473982/pexels-photo-6473982.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "structural", }, { title: "Flooring", strap: "Gallery-grade surfaces", description: "Wide-plank wood, stone, porcelain, and poured systems installed with disciplined transitions, flatness control, and exact alignment.", image: "https://images.pexels.com/photos/7045316/pexels-photo-7045316.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "flooring", }, { title: "Painting & Finishing", strap: "The final construction layer", description: "Skim coats, mineral paints, staining, touch-up, and finish calibration that turn a completed build into a complete atmosphere.", image: "https://images.pexels.com/photos/6474129/pexels-photo-6474129.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1400", icon: "finish", }, ];
+
+const services: Service[] = [
+  { title: "Carpet Services", image: img1 },
+  { title: "Wood Flooring Services", image: img2 },
+  { title: "New Construction", image: img3 },
+  { title: "Remodeling Services", image: img4 },
+  { title: "Painting Services", image: img5 },
+  { title: "Power Washing", image: img6 },
+  { title: "Sidewalk Services", image: img7 },
+];
 
 const projects: Project[] = [
   {
@@ -63,8 +70,7 @@ const projects: Project[] = [
       "A sculpted hillside residence built in exposed concrete, glass, and warm natural finishes with architect-level coordination from shell to lighting.",
     before: "Steep site, fractured planning, and severe grade constraints.",
     after: "A calm monolithic residence with controlled light and seamless indoor-outdoor geometry.",
-    image:
-      "https://images.pexels.com/photos/11312129/pexels-photo-11312129.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj1,
     size: "feature",
   },
   {
@@ -76,8 +82,7 @@ const projects: Project[] = [
       "A steel-forward workplace retrofit shaped around acoustic control, hospitality finishes, and highly coordinated service integration.",
     before: "Dark shell conditions and disconnected circulation.",
     after: "Open collaborative floors with engineered flow and a premium material identity.",
-    image:
-      "https://images.pexels.com/photos/20578678/pexels-photo-20578678.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj2,
     size: "tall",
   },
   {
@@ -89,8 +94,7 @@ const projects: Project[] = [
       "A luxury penthouse interior built around stone calibration, concealed lighting, warm oak, and tightly resolved architectural detailing.",
     before: "Developer-grade surfaces with no material rhythm.",
     after: "A restrained interior with hospitality-level finish and spatial continuity.",
-    image:
-      "https://images.pexels.com/photos/6489127/pexels-photo-6489127.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj3,
     size: "wide",
   },
   {
@@ -102,8 +106,7 @@ const projects: Project[] = [
       "A complex repair and residential conversion where hidden framing intervention had to support a gallery-grade finish language.",
     before: "Compromised framing, uneven floors, and unstable service routes.",
     after: "A stabilized structure with quiet detailing and durable finish continuity.",
-    image:
-      "https://images.pexels.com/photos/6473982/pexels-photo-6473982.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj4,
     size: "standard",
   },
   {
@@ -115,8 +118,7 @@ const projects: Project[] = [
       "An immersive flagship environment defined by exposed services, dark metal framing, rich material contrast, and calibrated customer flow.",
     before: "An empty volume with no visitor narrative or brand presence.",
     after: "A cinematic spatial experience anchored by industrial precision.",
-    image:
-      "https://images.pexels.com/photos/32494505/pexels-photo-32494505.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj5,
     size: "wide",
   },
   {
@@ -128,8 +130,7 @@ const projects: Project[] = [
       "A courtyard house balancing privacy, concrete massing, warm timber, and hidden structural steel to create a composed modern sanctuary.",
     before: "Undeveloped lot with difficult light and privacy edges.",
     after: "A protected residence with measured openings, warm interiors, and strong structural rhythm.",
-    image:
-      "https://images.pexels.com/photos/4534504/pexels-photo-4534504.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1600",
+    image: proj6,
     size: "tall",
   },
 ];
@@ -187,7 +188,7 @@ const testimonials: Testimonial[] = [
 
 function SectionKicker({ children }: { children: string }) {
   return (
-    <div className="flex items-center gap-3 text-[0.68rem] font-semibold uppercase tracking-[0.3em] text-black">
+    <div className="flex items-center gap-3 text-[0.68rem] uppercase tracking-[0.3em] text-black font-bold">
       <span className="h-px w-9 bg-[#C85A2D]" />
       <span>{children}</span>
     </div>
@@ -208,173 +209,47 @@ function Reveal({ children, className, delay = 0 }: { children: ReactNode; class
   );
 }
 
-function ServiceIcon({ type }: { type: ServiceIconType }) {
-  const cls = "h-5 w-5 text-[#7B6F64]";
-
-  switch (type) {
-    case "remodel":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M3 20h18" />
-          <path d="M4 20V8l8-4 8 4v12" />
-          <path d="M9 20v-5h6v5" />
-        </svg>
-      );
-    case "custom":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" />
-          <path d="M12 22V11.5" />
-          <path d="M20 6.5L12 11 4 6.5" />
-        </svg>
-      );
-    case "commercial":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 20V6l7-2v16" />
-          <path d="M11 20h9V10l-9-2" />
-          <path d="M7 9h1" />
-          <path d="M7 13h1" />
-          <path d="M14 13h1" />
-          <path d="M14 17h1" />
-        </svg>
-      );
-    case "kitchen":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M3 7h18" />
-          <path d="M5 7v10" />
-          <path d="M19 7v10" />
-          <path d="M3 17h18" />
-          <path d="M10 7v10" />
-          <path d="M14 11h3" />
-        </svg>
-      );
-    case "bathroom":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M6 11h12" />
-          <path d="M8 11V7a4 4 0 0 1 8 0" />
-          <path d="M5 11v3a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-3" />
-          <path d="M9 18v2" />
-          <path d="M15 18v2" />
-        </svg>
-      );
-    case "concrete":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 8h16" />
-          <path d="M4 12h16" />
-          <path d="M4 16h16" />
-          <path d="M8 4v16" />
-          <path d="M16 4v16" />
-        </svg>
-      );
-    case "exterior":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 20V6l8-3 8 3v14" />
-          <path d="M12 3v17" />
-          <path d="M8 9h1" />
-          <path d="M15 9h1" />
-          <path d="M8 13h1" />
-          <path d="M15 13h1" />
-        </svg>
-      );
-    case "structural":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M5 4v16" />
-          <path d="M19 4v16" />
-          <path d="M5 4h14" />
-          <path d="M5 20h14" />
-          <path d="M7 17L17 7" />
-          <path d="M7 7l10 10" />
-        </svg>
-      );
-    case "flooring":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 7h16" />
-          <path d="M4 12h16" />
-          <path d="M4 17h16" />
-          <path d="M8 7v5" />
-          <path d="M14 12v5" />
-        </svg>
-      );
-    case "finish":
-      return (
-        <svg className={cls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 20l6-6" />
-          <path d="M14 8l4 4" />
-          <path d="M10 10l4-4 5 5-4 4" />
-          <path d="M3 21h7" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
-
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const sizeClasses = {
-    feature: "col-span-12 lg:col-span-7 row-span-3 min-h-[28rem] lg:min-h-[38rem]",
-    wide: "col-span-12 md:col-span-6 lg:col-span-5 row-span-2 min-h-[24rem] lg:min-h-[25rem]",
-    tall: "col-span-12 md:col-span-6 lg:col-span-5 row-span-3 min-h-[25rem] lg:min-h-[38rem]",
-    standard: "col-span-12 md:col-span-6 lg:col-span-7 row-span-2 min-h-[24rem] lg:min-h-[25rem]",
-  };
-
+function PortfolioCard({ project, index }: { project: Project; index: number }) {
   return (
     <motion.article
       layout
       initial={{ opacity: 0, y: 22 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 18 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.45, delay: index * 0.04 }}
-      className={cn(
-        "group relative isolate overflow-hidden rounded-[30px] border border-[#D4C4B0] bg-[#F5EFE6] shadow-[0_28px_80px_rgba(0,0,0,0.28)]",
-        sizeClasses[project.size]
-      )}
+      className="group flex flex-col overflow-hidden rounded-[32px] bg-white shadow-[0_30px_80px_rgba(0,0,0,0.12)] transition-transform duration-500 hover:-translate-y-1 block"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.04]"
-        style={{
-          backgroundImage: `linear-gradient(180deg, rgba(14,15,18,0.14), rgba(14,15,18,0.95)), url(${project.image})`,
-        }}
-      />
-      <div className="absolute inset-0 blueprint-grid opacity-25" />
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#FBF7F0]/80 to-transparent" />
-      <div className="absolute left-6 top-6 h-10 w-10 rounded-full border border-[#B8860B]/35 bg-[#FBF7F0]/55 backdrop-blur-md" />
-      <div className="absolute left-11 top-11 h-px w-24 bg-[#B8860B]/60" />
+      {/* Image Section (Top) */}
+      <div className="relative h-[24rem] sm:h-[28rem] overflow-hidden w-full shrink-0">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.07]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      </div>
 
-      <div className="relative flex h-full flex-col justify-between p-6 lg:p-8">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex flex-wrap gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7B6F64]">
-            <span className="rounded-full border border-[#7B6F64]/18 bg-[#FBF7F0]/60 px-3 py-1">{project.category}</span>
-            <span className="rounded-full border border-[#B8860B]/20 bg-[#FBF7F0]/55 px-3 py-1 text-[#9B8F80]">{project.location}</span>
+      {/* White Box attached after the image (Bottom) */}
+      <div className="flex flex-col justify-between flex-grow p-8 sm:p-10 bg-white">
+        <div>
+          <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] mb-3 font-bold">
+            {project.category}
           </div>
-          <div className="rounded-full border border-[#C85A2D]/25 bg-[#C85A2D]/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38]">
-            {project.scope}
-          </div>
+          <h3 className="text-5xl font-display leading-tight text-[#C85A2D] mb-3">
+            {project.title}
+          </h3>
+          <p className="text-lg leading-6 text-[#7B6F64] mb-6 line-clamp-2 font-bold">
+            {project.summary}
+          </p>
         </div>
-
-        <div className="max-w-2xl space-y-4">
-          <div className="space-y-3">
-            <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#9B8F80]">Case Study / {String(index + 1).padStart(2, "0")}</div>
-            <h3 className="font-display text-4xl leading-[0.95] text-[#3E3B38] sm:text-5xl">{project.title}</h3>
-            <p className="max-w-xl text-sm leading-7 text-[#7B6F64]/88 sm:text-base">{project.summary}</p>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="rounded-2xl border border-[#D4C4B0] bg-[#FBF7F0]/74 p-4 backdrop-blur-md">
-              <div className="mb-2 text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[#9B8F80]">Before</div>
-              <p className="text-sm leading-6 text-[#7B6F64]">{project.before}</p>
-            </div>
-            <div className="rounded-2xl border border-[#B8860B]/25 bg-[#FBF7F0]/74 p-4 backdrop-blur-md">
-              <div className="mb-2 text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[#B8860B]">After</div>
-              <p className="text-sm leading-6 text-[#3E3B38]">{project.after}</p>
-            </div>
-          </div>
+        <div>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.22em] text-[#3E3B38] transition duration-300 hover:text-[#C85A2D] font-bold"
+          >
+            Read More
+            <span aria-hidden="true" className="text-[#C85A2D] transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
         </div>
       </div>
     </motion.article>
@@ -384,12 +259,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 export default function App() {
   const reduceMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>("All");
-  const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [testimonialPaused, setTestimonialPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 36);
       setScrollY(window.scrollY);
     };
 
@@ -397,6 +274,31 @@ export default function App() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (testimonialPaused) return;
+    const timer = window.setInterval(() => {
+      setActiveTestimonial((current) => (current + 1) % testimonials.length);
+    }, 5500);
+    return () => window.clearInterval(timer);
+  }, [testimonialPaused]);
+
+  const handleTestimonialPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    touchStartX.current = event.clientX;
+  };
+
+  const handleTestimonialPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null) return;
+    const delta = event.clientX - touchStartX.current;
+    if (Math.abs(delta) > 40) {
+      if (delta < 0) {
+        setActiveTestimonial((current) => (current + 1) % testimonials.length);
+      } else {
+        setActiveTestimonial((current) => (current - 1 + testimonials.length) % testimonials.length);
+      }
+    }
+    touchStartX.current = null;
+  };
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === "All") return projects;
@@ -410,27 +312,25 @@ export default function App() {
         <div className="absolute inset-0 blueprint-grid opacity-[0.12]" />
       </div>
 
-      <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-500", scrolled ? "px-4 pt-4" : "px-0 pt-0")}>
-        <div
-          className={cn(
-            "mx-auto flex max-w-[1440px] items-center justify-between gap-6 transition-all duration-500",
-            scrolled
-              ? "rounded-full border border-[#D4C4B0] bg-[#FBF7F0]/88 px-5 py-3 shadow-[0_20px_60px_rgba(0,0,0,0.36)] backdrop-blur-xl"
-              : "border border-transparent px-6 py-5"
-          )}
+      {/* Detached Logo with Glass Card */}
+      <div className="fixed top-3 left-3 sm:top-4 sm:left-12 lg:top-4 lg:left-16 z-[60]">
+        <a
+          href="#home"
+          className="group flex items-center justify-center rounded-2xl sm:rounded-[2rem] border border-white/30 bg-white/20 px-3 py-2 sm:px-5 sm:py-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:bg-white/30 hover:scale-[1.02]"
+          aria-label="cardenas construction"
+          onClick={() => setIsMobileMenuOpen(false)}
         >
-          <a href="#home" className="group flex items-center gap-4" aria-label="cardenas construction">
-            <div className="relative grid h-11 w-11 place-items-center rounded-full border border-[#B8860B]/35 bg-[#F5EFE6]/85 text-[#3E3B38] backdrop-blur-md">
-              <span className="absolute h-4 w-px bg-[#C85A2D]" />
-              <span className="absolute w-4 border-t border-[#B8860B]" />
-              <span className="text-[0.62rem] font-bold tracking-[0.28em]">SF</span>
-            </div>
-            <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.34em] text-[#3E3B38]">cardenas construction</div>
-              <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#9B8F80]">Architectural Construction</div>
-            </div>
-          </a>
+          <img
+            src="/logo1.png"
+            alt="Cardenas Construction Logo"
+            className="w-[140px] xs:w-[170px] sm:w-[220px] lg:w-[250px] h-auto object-contain drop-shadow-md"
+          />
+        </a>
+      </div>
 
+      {/* Detached Permanent Navigation Pill */}
+      <header className="fixed inset-x-0 top-3 sm:top-8 lg:top-9 z-50 flex justify-end lg:justify-center pointer-events-none px-4 sm:px-8 lg:pl-[10%]">
+        <div className="pointer-events-auto flex items-center gap-4 sm:gap-8 rounded-full border border-[#D4C4B0] bg-[#FBF7F0]/95 px-3 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 shadow-[0_20px_60px_rgba(0,0,0,0.36)] backdrop-blur-xl">
           <nav className="hidden items-center gap-8 lg:flex">
             {[
               ["Story", "#about"],
@@ -442,7 +342,7 @@ export default function App() {
               <a
                 key={label}
                 href={href}
-                className="group relative text-sm uppercase tracking-[0.24em] text-[#7B6F64] transition-colors duration-300 hover:text-[#3E3B38]"
+                className="group relative text-sm font-bold uppercase tracking-[0.24em] text-[#7B6F64] transition-colors duration-300 hover:text-[#3E3B38]"
               >
                 {label}
                 <span className="absolute -bottom-2 left-0 h-px w-0 bg-[#C85A2D] transition-all duration-300 group-hover:w-full" />
@@ -450,15 +350,89 @@ export default function App() {
             ))}
           </nav>
 
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-3 rounded-full border border-[#C85A2D]/35 bg-[#C85A2D]/12 px-5 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38] transition duration-300 hover:border-[#B8860B] hover:bg-[#C85A2D]/22 hover:shadow-[0_0_30px_rgba(217,75,43,0.18)]"
-          >
-            Start a Project
-            <span className="text-[#B8860B]">→</span>
-          </a>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <a
+              href="#contact"
+              className="hidden rounded-full border border-[#C85A2D]/35 bg-[#C85A2D]/12 px-4 py-2 sm:px-5 sm:py-3 text-[0.6rem] sm:text-[0.72rem] font-bold uppercase tracking-[0.24em] text-[#3E3B38] transition duration-300 hover:border-[#B8860B] hover:bg-[#C85A2D]/22 xs:inline-flex items-center gap-2"
+            >
+              Start <span className="hidden sm:inline">a Project</span>
+              <span className="text-[#B8860B]">→</span>
+            </a>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="grid h-10 w-10 place-items-center rounded-full bg-[#1C1A18] text-[#FBF7F0] lg:hidden relative z-[70]"
+            >
+              <span className="sr-only">{isMobileMenuOpen ? "Close menu" : "Open menu"}</span>
+              <div className="space-y-1.5">
+                <motion.span
+                  animate={isMobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
+                  className="block h-0.5 w-5 bg-current origin-center"
+                />
+                <motion.span
+                  animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                  className="block h-0.5 w-5 bg-current"
+                />
+                <motion.span
+                  animate={isMobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
+                  className="block h-0.5 w-5 bg-current origin-center"
+                />
+              </div>
+            </button>
+          </div>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[65] bg-[#FBF7F0] lg:hidden"
+          >
+            <div className="flex flex-col h-full px-8 py-24 sm:py-32">
+              <nav className="flex flex-col gap-8">
+                {[
+                  ["Story", "#about"],
+                  ["Services", "#services"],
+                  ["Projects", "#projects"],
+                  ["Process", "#process"],
+                  ["Voices", "#testimonials"],
+                ].map(([label, href], i) => (
+                  <motion.a
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    key={label}
+                    href={href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-4xl xs:text-5xl font-display text-[#C85A2D] hover:translate-x-4 transition-transform duration-300"
+                  >
+                    {label}
+                  </motion.a>
+                ))}
+              </nav>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-auto pt-10 border-t border-[#D4C4B0]"
+              >
+                <a
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="inline-flex w-full items-center justify-between rounded-full bg-[#1C1A18] px-8 py-6 text-sm font-bold uppercase tracking-[0.2em] text-[#FBF7F0]"
+                >
+                  Start a Project
+                  <span className="text-[#C85A2D]">→</span>
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="relative z-10">
         <section id="home" className="relative isolate min-h-screen overflow-hidden border-b border-[#D4C4B0]">
@@ -466,7 +440,6 @@ export default function App() {
             <video
               className="h-full w-full object-cover"
               src={heroVideo}
-              poster={heroPoster}
               autoPlay
               muted
               loop
@@ -489,37 +462,26 @@ export default function App() {
             />
           </div>
 
-          <div className="relative mx-auto flex min-h-screen max-w-[1440px] items-center px-6 pb-14 pt-32 sm:px-8 lg:px-12">
+          <div className="relative mx-auto flex min-h-screen max-w-[1920px] items-center px-6 pb-14 pt-36 xs:pt-48 sm:pt-64 lg:pt-[240px] sm:px-8 lg:px-12">
             <div className="grid w-full items-end gap-10 lg:grid-cols-[minmax(0,1.15fr)_430px] xl:gap-16">
               <div className="space-y-10">
-                <Reveal className="max-w-4xl space-y-6">
-                  <SectionKicker>Architectural Industrial Luxury</SectionKicker>
+                <Reveal className="max-w-4xl space-y-8 sm:space-y-10 lg:space-y-16">
                   <div className="space-y-5">
-                    <div className="inline-flex items-center gap-3 rounded-full border border-[#7B6F64]/12 bg-[#FBF7F0]/40 px-4 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#C85A2D] backdrop-blur-md">
-                      <span className="h-2 w-2 rounded-full bg-[#C85A2D]" />
-                      Trusted for elite homes, commercial spaces, and modern structural interiors
-                    </div>
-                    <h1 className="font-display text-[clamp(3.8rem,9vw,8rem)] leading-[0.9] tracking-[-0.04em] text-balance text-black drop-shadow-lg">
-                      Engineered To Impress.
-                      <br />
-                      Built To Endure.
+                    <h1 className="font-display text-[clamp(2.75rem,12vw,9.5rem)] leading-[0.95] sm:leading-[0.9] tracking-[-0.04em] text-balance text-black drop-shadow-lg">
+                      Residential And Commercial Construction Across New Jersey
                     </h1>
-                    <p className="max-w-2xl text-base leading-8 text-black/90 drop-shadow-md sm:text-lg">
-                      We build with the confidence of structural engineering and the restraint of architectural design—combining raw materials,
-                      exact execution, and premium craftsmanship into spaces that feel substantial, tactile, and unmistakably high-end.
-                    </p>
                   </div>
-                  <div className="flex flex-col gap-4 sm:flex-row">
+                  <div className="flex flex-col gap-4 xs:flex-row">
                     <a
                       href="#projects"
-                      className="inline-flex items-center justify-center gap-3 rounded-full bg-[#FBF7F0]/38 px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38] backdrop-blur-md transition duration-300 hover:bg-[#C85A2D] hover:shadow-[0_0_40px_rgba(217,75,43,0.24)]"
+                      className="inline-flex items-center justify-center gap-3 rounded-full bg-[#FBF7F0]/38 px-7 py-4 text-[0.74rem] uppercase tracking-[0.24em] text-[#3E3B38] backdrop-blur-md transition duration-300 hover:bg-[#C85A2D] hover:shadow-[0_0_40px_rgba(217,75,43,0.24)] font-bold"
                     >
                       View Signature Projects
                       <span>↗</span>
                     </a>
                     <a
                       href="#about"
-                      className="inline-flex items-center justify-center gap-3 rounded-full border border-[#7B6F64]/18 bg-[#FBF7F0]/38 px-7 py-4 text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38] backdrop-blur-md transition duration-300 hover:border-[#B8860B]/50 hover:bg-[#C85A2D]"
+                      className="inline-flex items-center justify-center gap-3 rounded-full border border-[#7B6F64]/18 bg-[#FBF7F0]/38 px-7 py-4 text-[0.74rem] uppercase tracking-[0.24em] text-[#3E3B38] backdrop-blur-md transition duration-300 hover:border-[#B8860B]/50 hover:bg-[#C85A2D] font-bold"
                     >
                       Our Construction Philosophy
                       <span className="text-[#B8860B]">→</span>
@@ -527,7 +489,7 @@ export default function App() {
                   </div>
                 </Reveal>
 
-                
+
               </div>
 
 
@@ -535,204 +497,128 @@ export default function App() {
           </div>
         </section>
 
-        <section id="about" className="relative border-b border-[#D4C4B0] py-24 sm:py-28">
-  <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
-    <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-10">
-      <Reveal className="relative flex flex-col lg:col-span-5">
-        <div className="relative mr-0 overflow-hidden rounded-[34px] border border-[#D4C4B0] bg-[#F5EFE6] p-4 sm:p-5 lg:mr-8">
-          <div className="absolute inset-0 blueprint-grid opacity-20" />
+        <section id="about" className="relative border-b border-[#D4C4B0] bg-[#FBF7F0] py-24 sm:py-28">
+          <div className="mx-auto max-w-[1920px] px-6 sm:px-8 lg:px-12 flex flex-col gap-16 lg:gap-24">
+            <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] items-center">
+              <Reveal className="relative">
+                <div className="relative h-full min-h-[540px] lg:min-h-[640px] w-full">
+                  <div className="absolute -left-10 -top-10 h-[360px] w-[360px] rounded-full bg-[#C85A2D]/10 blur-3xl" />
+                  <div className="relative h-full overflow-hidden rounded-[36px] border border-[#D4C4B0] bg-[#FBF7F0]/80 shadow-[0_40px_120px_rgba(0,0,0,0.12)] transition-transform duration-700 hover:-translate-y-1">
+                    <img src={img1} alt="Construction detail" className="h-[540px] lg:h-[640px] w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#111314]/24 via-transparent to-transparent" />
+                    <div className="absolute left-6 bottom-6 rounded-[32px] border border-white/70 bg-white/75 px-5 py-4 text-sm uppercase tracking-[0.24em] text-[#3E3B38] shadow-[0_18px_40px_rgba(0,0,0,0.12)] backdrop-blur-xl font-bold">
+                      <div className="text-[0.68rem] font-bold">Built for every phase</div>
+                      <div className="mt-1 text-2xl font-bold">6+ Years</div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
 
-          <img
-            src="https://images.pexels.com/photos/4534504/pexels-photo-4534504.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1000"
-            alt="Contemporary concrete architecture"
-            className="h-[32rem] w-full rounded-[26px] object-cover"
-          />
-        </div>
+              <div className="space-y-10 lg:pl-12">
+                <Reveal className="space-y-6">
+                  <SectionKicker>Built from drawings. Proven on site.</SectionKicker>
+                  <h2 className="font-display text-5xl tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
+                    A construction atelier for warm architecture, quiet structure, and premium delivery.
+                  </h2>
+                  <p className="max-w-3xl text-lg leading-8 text-[#7B6F64]/92 sm:text-xl font-bold">
+                    Cardenas Construction LLC serves Hackensack and greater New Jersey with an elegant approach to residential and commercial builds. Our work is distinguished by structural clarity, material discipline, and a refined process that keeps every project composed.
+                  </p>
+                </Reveal>
+              </div>
+            </div>
 
-        <div className="steel-panel mt-6 w-full rounded-[28px] border border-[#D4C4B0] p-4 shadow-[0_24px_60px_rgba(0,0,0,0.34)] md:block">
-         <img
-  src="https://images.pexels.com/photos/15124970/pexels-photo-15124970.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=900"
-  alt="Craftsman working in a luxury interior under construction"
-  className="h-[32rem] w-full rounded-[26px] object-cover"
-/>
+            <div className="space-y-12">
+              <Reveal delay={0.05} className="grid gap-8 lg:gap-12 md:grid-cols-2">
+                <div className="rounded-[28px] border border-[#D4C4B0] bg-white/85 p-10 lg:p-12 shadow-[0_24px_70px_rgba(0,0,0,0.12)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 min-h-[290px]">
+                  <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Founder Story</div>
+                  <p className="mt-4 text-lg leading-7 text-[#3E3B38] lg:text-lg lg:leading-8 font-bold">
+                    Our team began in technically demanding renovations and concrete work, then grew into a local construction studio with deep structural and finish expertise.
+                  </p>
+                  <dl className="mt-6 grid gap-4 text-sm leading-7 text-[#7B6F64] font-bold">
+                    <div>
+                      <dt className="font-semibold uppercase tracking-[0.24em] text-[#C85A2D]">Specialty</dt>
+                      <dd className="mt-2 text-[#3E3B38]">Complex builds with elevated structural and finish demands</dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold uppercase tracking-[0.24em] text-[#C85A2D]">Approach</dt>
+                      <dd className="mt-2 text-[#3E3B38]">Clear planning, communicated milestones, and consistent execution</dd>
+                    </div>
+                  </dl>
+                </div>
 
-        </div>
-      </Reveal>
+                <div className="rounded-[28px] border border-[#D4C4B0] bg-white/85 p-10 lg:p-12 shadow-[0_24px_70px_rgba(0,0,0,0.12)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 min-h-[290px]">
+                  <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Field Presence</div>
+                  <p className="mt-4 text-lg leading-7 text-[#3E3B38] lg:text-lg lg:leading-8 font-bold">
+                    We build with calm site leadership, engineered sequencing, and a finish-first mindset. The result is construction that feels deliberate at every scale.
+                  </p>
+                  <ul className="mt-6 space-y-3 text-[#7B6F64]">
+                    <li className="flex gap-3"><span className="mt-1 h-2 w-2 rounded-full bg-[#C85A2D]" />Tight tolerances and calm coordination</li>
+                    <li className="flex gap-3"><span className="mt-1 h-2 w-2 rounded-full bg-[#C85A2D]" />Material language that reads as a whole</li>
+                    <li className="flex gap-3"><span className="mt-1 h-2 w-2 rounded-full bg-[#C85A2D]" />Built for long-term performance and presence</li>
+                  </ul>
+                </div>
+              </Reveal>
 
-      <div className="space-y-8 lg:col-span-7 lg:pl-8">
-        <Reveal className="space-y-5">
-          <SectionKicker>Built from drawings. Proven on site.</SectionKicker>
-
-          <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-6xl">
-            Construction that protects architectural intent at every layer.
-          </h2>
-
-          <p className="max-w-3xl text-base leading-8 text-[#7B6F64]/88 sm:text-lg">
-            cardenas construction was shaped by builders who understand that luxury is not surface alone. It lives in the hidden structure,
-            the calibrated light, the clean transition, and the way materials are allowed to feel honest. We execute demanding projects
-            with the discipline of engineers and the sensitivity of architectural collaborators.
-          </p>
-        </Reveal>
-
-       <Reveal delay={0.05} className="space-y-10">
-  <div className="grid gap-6">
-    <div className="rounded-[30px] border border-[#D4C4B0] bg-[#F5EFE6]/78 p-7 shadow-[0_20px_60px_rgba(0,0,0,0.22)]">
-      <div className="mb-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#A94724]">
-        Founder Story
-      </div>
-
-      <p className="text-base leading-8 text-[#3E3B38]">
-        We began with concrete packages, structural interior work, and technically difficult renovations. Over time, that field depth evolved into a premium
-        construction studio trusted for luxury residences, commercial environments, and highly detailed modern spaces.
-      </p>
-
-      <div className="mt-6 grid gap-3 border-t border-[#D4C4B0] pt-6 text-sm text-[#7B6F64] sm:grid-cols-2">
-        <div>
-          <div className="text-[0.66rem] uppercase tracking-[0.24em] text-[#C85A2D]">
-            Specialty
+              <Reveal delay={0.1} className="grid gap-8 lg:gap-12 md:grid-cols-3">
+                {[
+                  { title: "Structural clarity", body: "Hidden structure is composed with equal care as finished surfaces." },
+                  { title: "Material language", body: "Timber, stone, steel and finish are read as a single premium composition." },
+                  { title: "Enduring craftsmanship", body: "Details are resolved for permanence, tactility, and quiet luxury." },
+                ].map((item, index) => (
+                  <article key={item.title} className="group rounded-[28px] border border-[#D4C4B0] bg-white/85 p-10 shadow-[0_24px_60px_rgba(0,0,0,0.1)] transition duration-300 hover:-translate-y-1 min-h-[260px]">
+                    <div className="mb-3 text-[0.68rem] uppercase tracking-[0.26em] text-[#C85A2D] font-bold">0{index + 1}</div>
+                    <h3 className="text-xl text-[#C85A2D] font-bold">{item.title}</h3>
+                    <p className="mt-3 text-lg leading-7 text-[#7B6F64] font-bold">{item.body}</p>
+                  </article>
+                ))}
+              </Reveal>
+            </div>
           </div>
+        </section>
 
-          <div className="mt-2">
-            Complex builds with elevated structural and finish demands
-          </div>
-        </div>
-
-        <div>
-          <div className="text-[0.66rem] uppercase tracking-[0.24em] text-[#C85A2D]">
-            Approach
-          </div>
-
-          <div className="mt-2">
-            Engineer the hidden layers. Perfect the visible ones.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div className="rounded-[30px] border border-[#A94724]/18 bg-[#FBF7F0]/68 p-7 backdrop-blur-xl">
-      <div className="mb-6 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#C85A2D]">
-        Construction Coordinates
-      </div>
-
-      <div className="space-y-5 text-sm leading-7 text-[#7B6F64]">
-        <div>
-          <div className="mb-1 text-[0.66rem] uppercase tracking-[0.24em] text-[#A94724]">
-            01 / Precision
-          </div>
-
-          Tight tolerances, clean geometry, and disciplined alignment between structure and finish.
-        </div>
-
-        <div>
-          <div className="mb-1 text-[0.66rem] uppercase tracking-[0.24em] text-[#A94724]">
-            02 / Material Honesty
-          </div>
-
-          Concrete should feel substantial. Steel should feel exact. Timber should feel warm, not decorative.
-        </div>
-
-        <div>
-          <div className="mb-1 text-[0.66rem] uppercase tracking-[0.24em] text-[#A94724]">
-            03 / Execution Calm
-          </div>
-
-          Clear site leadership, clean communication, and no chaos around difficult work.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div className="grid gap-6 md:grid-cols-3 pt-4">
-    {[
-      {
-        title: "Structural clarity",
-        body: "The hidden framework of a project should be as disciplined as the architecture people see.",
-      },
-      {
-        title: "Premium material language",
-        body: "Concrete, metal, stone, wood, and light are coordinated as one composition rather than disconnected trades.",
-      },
-      {
-        title: "Enduring craftsmanship",
-        body: "We build for permanence, tactile richness, and quiet confidence—not trend-driven decoration.",
-      },
-    ].map((item, index) => (
-      <Reveal key={item.title} delay={0.08 + index * 0.05}>
-        <div className="h-full rounded-[26px] border border-[#D4C4B0] bg-[#F5EFE6]/78 p-6">
-          <div className="mb-3 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#C85A2D]">
-            0{index + 1}
-          </div>
-
-          <h3 className="mb-3 text-xl font-semibold text-[#C85A2D]">
-            {item.title}
-          </h3>
-
-          <p className="text-sm leading-7 text-[#7B6F64]/86">
-            {item.body}
-          </p>
-        </div>
-      </Reveal>
-    ))}
-  </div>
-</Reveal>
-
-        
-      </div>
-    </div>
-  </div>
-</section>
-
-        <section id="services" className="relative border-b border-[#D4C4B0] bg-[#F5EFE6] py-24 sm:py-28">
-          <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
+        <section id="services" className="relative border-b border-[#D4C4B0] bg-[#FBF7F0] py-24 sm:py-28">
+          <div className="mx-auto max-w-[1920px] px-6 sm:px-8 lg:px-12">
             <div className="mb-14 grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
               <Reveal className="space-y-5">
                 <SectionKicker>Services</SectionKicker>
-                <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-6xl">
-                  Industrial-grade construction services with luxury-level finish discipline.
+                <h2 className="font-display text-5xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
+                  Bespoke service suites delivered with architectural precision.
                 </h2>
               </Reveal>
               <Reveal delay={0.08} className="lg:max-w-2xl lg:justify-self-end">
-                <p className="text-base leading-8 text-[#C85A2D] sm:text-lg">
-                  Every service is managed like a carefully coordinated build package. We bring planning, sequencing, structural awareness,
-                  and finish intelligence to each project type so the final result feels engineered rather than assembled.
+                <p className="text-lg leading-8 text-[#7B6F64]/88 sm:text-xl font-bold">
+                  A premium gallery of service offerings anchored by clean imagery, refined spacing, and a calm, elevated experience.
                 </p>
               </Reveal>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {services.map((service, index) => (
-                <Reveal key={service.title} delay={index * 0.03}>
-                  <article className="group relative isolate overflow-hidden rounded-[28px] border border-[#D4C4B0] bg-[#252A31] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.22)]">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-[1.04]"
-                      style={{
-                        backgroundImage: `linear-gradient(180deg, rgba(14,15,18,0.14), rgba(14,15,18,0.96)), url(${service.image})`,
-                      }}
-                    />
-                    <div className="absolute inset-0 blueprint-grid opacity-[0.18]" />
-                    <div className="absolute inset-x-6 top-6 h-px bg-gradient-to-r from-[#B8860B]/0 via-[#B8860B]/60 to-[#B8860B]/0" />
-                    <div className="relative flex min-h-[22rem] flex-col justify-between">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="grid h-12 w-12 place-items-center rounded-2xl border border-[#7B6F64]/14 bg-[#FBF7F0]/54 backdrop-blur-md">
-                          <ServiceIcon type={service.icon} />
-                        </div>
-                        <span className="text-[0.68rem] font-semibold uppercase tracking-[0.26em] text-[#9B8F80]">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-
-                      <div>
-                        <div className="mb-3 text-[0.66rem] uppercase tracking-[0.24em] text-[#B8860B]">{service.strap}</div>
-                        <h3 className="max-w-xs text-2xl font-semibold leading-tight text-[#3E3B38]">{service.title}</h3>
-                        <p className="mt-4 text-sm leading-7 text-[#7B6F64]/86">{service.description}</p>
-                      </div>
-
-                      <div className="flex items-center justify-between gap-4 border-t border-[#D4C4B0] pt-5">
-                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#C85A2D]">Construction Package</div>
-                        <span className="text-xl text-[#7B6F64] transition-transform duration-300 group-hover:translate-x-1">→</span>
-                      </div>
+                <Reveal
+                  key={service.title}
+                  delay={index * 0.04}
+                  className={index === services.length - 1 ? "sm:col-span-2 xl:col-span-3" : ""}
+                >
+                  <motion.article
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: index * 0.04 }}
+                    className="group overflow-hidden rounded-[32px] border border-[#D4C4B0] bg-white shadow-[0_24px_70px_rgba(0,0,0,0.12)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(0,0,0,0.16)]"
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="h-[22rem] w-full object-cover transition duration-700 group-hover:scale-[1.08]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+                      <div className="absolute inset-x-0 bottom-0 h-[120px] bg-gradient-to-t from-black/45 via-transparent to-transparent" />
                     </div>
-                  </article>
+                    <div className="p-6 sm:p-7">
+                      <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Service</div>
+                      <h3 className="mt-4 text-5xl font-display leading-tight text-[#C85A2D]">{service.title}</h3>
+                    </div>
+                  </motion.article>
                 </Reveal>
               ))}
             </div>
@@ -740,28 +626,28 @@ export default function App() {
         </section>
 
         <section id="projects" className="relative border-b border-[#D4C4B0] py-24 sm:py-28">
-          <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-[1920px] px-6 sm:px-8 lg:px-12">
             <div className="mb-12 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
               <Reveal className="max-w-4xl space-y-5">
                 <SectionKicker>Featured Projects</SectionKicker>
-                <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#3E3B38] sm:text-6xl">
+                <h2 className="font-display text-5xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
                   A portfolio that feels like modern architecture in print—and in motion.
                 </h2>
-                <p className="max-w-3xl text-base leading-8 text-[#7B6F64]/86 sm:text-lg">
+                <p className="max-w-3xl text-lg leading-8 text-[#7B6F64]/86 sm:text-xl font-bold">
                   Selected residences, structural transformations, commercial spaces, and high-end interiors. Each one reflects measured constraints,
                   technical coordination, and a material sensibility grounded in real craftsmanship.
                 </p>
               </Reveal>
 
               <Reveal delay={0.08}>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {filters.map((filter) => (
                     <button
                       key={filter}
                       type="button"
                       onClick={() => setActiveFilter(filter)}
                       className={cn(
-                        "rounded-full border px-5 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.22em] transition duration-300",
+                        "rounded-full border px-4 py-2 sm:px-5 sm:py-3 text-[0.65rem] sm:text-[0.72rem] font-bold uppercase tracking-[0.22em] transition duration-300",
                         activeFilter === filter
                           ? "border-[#C85A2D] bg-[#C85A2D] text-[#3E3B38] shadow-[0_0_35px_rgba(217,75,43,0.2)]"
                           : "border-[#D4C4B0] bg-[#F5EFE6]/68 text-[#7B6F64] hover:border-[#B8860B]/40 hover:bg-[#F5EFE6]"
@@ -774,224 +660,285 @@ export default function App() {
               </Reveal>
             </div>
 
-            <motion.div layout className="grid auto-rows-[12rem] gap-5 lg:grid-cols-12">
+            <motion.div layout className="grid gap-6 grid-cols-1 sm:grid-cols-2">
               <AnimatePresence mode="popLayout">
                 {filteredProjects.map((project, index) => (
-                  <ProjectCard key={project.title} project={project} index={index} />
+                  <PortfolioCard key={project.title} project={project} index={index} />
                 ))}
               </AnimatePresence>
             </motion.div>
           </div>
         </section>
 
-        <section id="process" className="relative border-b border-[#D4C4B0] bg-[#F5EFE6] py-24 sm:py-28">
-          <div className="mx-auto grid max-w-[1440px] gap-12 px-6 sm:px-8 lg:grid-cols-[0.94fr_1.06fr] lg:px-12">
-            <Reveal className="space-y-6">
-              <SectionKicker>Execution Framework</SectionKicker>
-              <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#3E3B38] sm:text-6xl">
-                Blueprint thinking. Field discipline. Finished space with presence.
-              </h2>
-              <p className="max-w-2xl text-base leading-8 text-[#7B6F64]/86 sm:text-lg">
-                Luxury construction is won long before the final photographs. It is won in planning, field coordination, tolerance control,
-                and the ability to keep the original architectural idea intact under real jobsite pressure.
-              </p>
+        <section id="process" className="relative border-b border-[#D4C4B0] bg-[#FBF7F0] py-24 sm:py-28">
+          <div className="mx-auto grid max-w-[1920px] gap-12 px-6 sm:px-8 lg:grid-cols-[0.96fr_1.04fr] lg:px-12">
+            <div className="space-y-6">
+              <Reveal className="space-y-6">
+                <SectionKicker>Execution Framework</SectionKicker>
+                <h2 className="font-display text-5xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
+                  Blueprint thinking. Field discipline. Finished space with presence.
+                </h2>
+                <p className="max-w-2xl text-lg leading-8 text-[#7B6F64]/86 sm:text-xl font-bold">
+                  Luxury construction is won long before the final photographs. It is won in planning, field coordination, tolerance control, and the ability to keep the original architectural idea intact under real jobsite pressure.
+                </p>
+              </Reveal>
 
-              <div className="steel-panel relative overflow-hidden rounded-[32px] border border-[#D4C4B0] p-7">
-                <div className="absolute inset-0 blueprint-grid opacity-25" />
-                <div className="relative space-y-5">
-                  <div className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#9B8F80]">Material Ledger</div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {[
-                      ["Carbon Black", "Quiet primary field for structure, contrast, and depth"],
-                      ["Structural Blue", "Blueprint overlays, systems language, and precision cues"],
-                      ["Burnt Orange", "Construction energy, action points, and strong emphasis"],
-                      ["Copper Ember", "Warm premium highlight against industrial surfaces"],
-                    ].map(([title, detail]) => (
-                      <div key={title} className="rounded-[24px] border border-[#D4C4B0] bg-[#FBF7F0]/55 p-5">
-                        <div className="text-sm font-semibold text-[#3E3B38]">{title}</div>
-                        <div className="mt-2 text-sm leading-7 text-[#7B6F64]/82">{detail}</div>
-                      </div>
-                    ))}
+              <div className="rounded-[36px] border border-[#D4C4B0] bg-white/90 p-8 shadow-[0_40px_100px_rgba(0,0,0,0.14)]">
+                <div className="inline-flex items-center gap-3 rounded-full border border-[#C85A2D]/20 bg-[#FFF1E4]/80 px-4 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">
+                  Process System
+                </div>
+                <h3 className="mt-6 text-5xl font-display tracking-[-0.03em] text-[#C85A2D]">A premium field framework for engineered construction delivery.</h3>
+                <p className="mt-6 max-w-xl text-lg leading-8 text-[#7B6F64]/88 font-bold">
+                  Every step is mapped so structure, materials, and finish align from mobilization through final calibration. This is construction designed to feel composed, decisive, and intentional.
+                </p>
+                <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-[28px] border border-[#D4C4B0] bg-[#FBF7F0]/85 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+                    <div className="text-sm uppercase tracking-[0.24em] text-[#C85A2D] font-bold">Field Intelligence</div>
+                    <p className="mt-4 text-lg leading-7 text-[#7B6F64] font-bold">Measured surveys, coordination, and real-site planning before visible work begins.</p>
+                  </div>
+                  <div className="rounded-[28px] border border-[#D4C4B0] bg-[#FBF7F0]/85 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+                    <div className="text-sm uppercase tracking-[0.24em] text-[#C85A2D] font-bold">Material Precision</div>
+                    <p className="mt-4 text-lg leading-7 text-[#7B6F64] font-bold">Mockups, procurement, and installation tolerances are coordinated with finish-first discipline.</p>
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </div>
 
-            <div className="space-y-5">
-              {processSteps.map((step, index) => (
-                <Reveal key={step.id} delay={index * 0.05}>
-                  <div className="group relative overflow-hidden rounded-[30px] border border-[#D4C4B0] bg-[#FBF7F0]/74 p-6 shadow-[0_22px_50px_rgba(0,0,0,0.18)] backdrop-blur-md sm:p-7">
-                    <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-[#B8860B]/0 via-[#B8860B]/70 to-[#C85A2D]/0" />
-                    <div className="absolute inset-0 blueprint-grid opacity-15" />
-                    <div className="relative grid gap-6 sm:grid-cols-[90px_1fr] sm:items-start">
-                      <div>
-                        <div className="font-display text-5xl leading-none text-[#B8860B]">{step.id}</div>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold text-[#3E3B38]">{step.title}</h3>
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-[#7B6F64]/86 sm:text-base">{step.description}</p>
-                      </div>
+            <div className="relative flex flex-col rounded-[36px] border border-[#D4C4B0] bg-[#FBF7F0]/90 p-8 sm:p-10 shadow-[0_40px_100px_rgba(0,0,0,0.14)]">
+              <div className="relative flex flex-col justify-between h-full gap-6">
+                {processSteps.map((step, index) => (
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, x: 24 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                    className="group flex flex-col sm:flex-row gap-6 relative overflow-hidden rounded-[30px] border border-[#D4C4B0] bg-white/85 p-6 sm:p-8 shadow-[0_22px_50px_rgba(0,0,0,0.12)] transition duration-300 hover:-translate-y-1"
+                  >
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#C85A2D]/20 bg-[#FFF1E4]/90 text-sm uppercase tracking-[0.2em] text-[#C85A2D] shadow-inner font-bold">
+                      {step.id}
                     </div>
-                  </div>
-                </Reveal>
-              ))}
+                    <div className="space-y-3 pt-1">
+                      <h3 className="text-5xl font-semibold text-[#C85A2D]">{step.title}</h3>
+                      <p className="text-lg leading-7 text-[#7B6F64]/90 font-bold">{step.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="testimonials" className="relative border-b border-[#D4C4B0] py-24 sm:py-28">
-          <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12">
+        <section id="testimonials" className="relative border-b border-[#D4C4B0] bg-[#FBF7F0] py-24 sm:py-28">
+          <div className="mx-auto max-w-[1920px] px-6 sm:px-8 lg:px-12">
             <div className="mb-12 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <Reveal className="space-y-5">
                 <SectionKicker>Client Voices</SectionKicker>
-                <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#3E3B38] sm:text-6xl">
-                  Trusted where craftsmanship, structure, and complexity meet.
+                <h2 className="font-display text-5xl leading-none tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
+                  Trusted voices from completed architecture and construction work.
                 </h2>
               </Reveal>
               <Reveal delay={0.08} className="lg:max-w-2xl lg:justify-self-end">
-                <p className="text-base leading-8 text-[#7B6F64]/86 sm:text-lg">
-                  Our clients expect more than construction management. They expect a partner who can understand design intent,
-                  resolve technical realities, and deliver a space that feels complete in both performance and atmosphere.
+                <p className="text-lg leading-8 text-[#7B6F64]/86 sm:text-xl font-bold">
+                  Testimonials from clients who value precision, material intelligence, and a construction partner that delivers with care.
                 </p>
               </Reveal>
             </div>
 
-            <div className="grid gap-5 lg:grid-cols-3">
-              {testimonials.map((testimonial, index) => (
-                <Reveal key={testimonial.author} delay={index * 0.06}>
-                  <article className="group relative overflow-hidden rounded-[30px] border border-[#D4C4B0] bg-[#F5EFE6]/88 p-7 shadow-[0_24px_60px_rgba(0,0,0,0.24)]">
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C85A2D]/75 to-transparent" />
-                    <div className="absolute -right-10 top-6 h-28 w-28 rounded-full bg-[#C85A2D]/10 blur-3xl" />
-                    <div className="relative space-y-6">
-                      <div className="font-display text-6xl leading-none text-[#B8860B]">“</div>
-                      <p className="text-base leading-8 text-[#3E3B38]">{testimonial.quote}</p>
-                      <div className="border-t border-[#D4C4B0] pt-5">
-                        <div className="text-sm font-semibold uppercase tracking-[0.18em] text-[#3E3B38]">{testimonial.author}</div>
-                        <div className="mt-2 text-sm text-[#9B8F80]">
-                          {testimonial.role} / {testimonial.project}
-                        </div>
+            <div
+              className="relative overflow-hidden rounded-[36px] border border-[#D4C4B0] bg-white/90 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.12)] sm:p-8"
+              onPointerDown={handleTestimonialPointerDown}
+              onPointerUp={handleTestimonialPointerUp}
+              onMouseEnter={() => setTestimonialPaused(true)}
+              onMouseLeave={() => setTestimonialPaused(false)}
+            >
+              <div className="absolute -left-8 top-8 h-24 w-24 rounded-full bg-[#C85A2D]/10 blur-3xl" />
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C85A2D]/50 to-transparent" />
+              <div className="relative">
+                <AnimatePresence mode="wait">
+                  <motion.article
+                    key={activeTestimonial}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.45 }}
+                    className="relative rounded-[32px] border border-[#D4C4B0] bg-[#F5EFE6]/95 p-10 shadow-[0_26px_70px_rgba(0,0,0,0.12)]"
+                  >
+                    <div className="font-display text-6xl leading-none text-[#B8860B]">“</div>
+                    <p className="mt-6 text-lg leading-9 text-[#3E3B38] font-bold">{testimonials[activeTestimonial].quote}</p>
+                    <div className="mt-8 flex flex-col gap-2 border-t border-[#D4C4B0] pt-6 text-sm text-[#7B6F64] sm:flex-row sm:items-center sm:justify-between font-bold">
+                      <div>
+                        <div className="font-semibold uppercase tracking-[0.18em] text-[#3E3B38]">{testimonials[activeTestimonial].author}</div>
+                        <div className="mt-1 text-[#9B8F80]">{testimonials[activeTestimonial].role} / {testimonials[activeTestimonial].project}</div>
+                      </div>
+                      <div className="flex gap-3">
+                        {testimonials.map((_, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            aria-label={`View testimonial ${index + 1}`}
+                            onClick={() => setActiveTestimonial(index)}
+                            className={cn(
+                              "h-3 w-3 rounded-full transition-all duration-300",
+                              activeTestimonial === index ? "bg-[#C85A2D]" : "bg-[#D4C4B0]/80"
+                            )}
+                          />
+                        ))}
                       </div>
                     </div>
-                  </article>
-                </Reveal>
-              ))}
+                  </motion.article>
+                </AnimatePresence>
+
+                <div className="mt-8 flex items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTestimonial((current) => (current - 1 + testimonials.length) % testimonials.length)}
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#D4C4B0] bg-[#FBF7F0] text-[#3E3B38] transition duration-300 hover:border-[#C85A2D] hover:bg-[#F5E1D1]"
+                    aria-label="Previous testimonial"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTestimonial((current) => (current + 1) % testimonials.length)}
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#D4C4B0] bg-[#FBF7F0] text-[#3E3B38] transition duration-300 hover:border-[#C85A2D] hover:bg-[#F5E1D1]"
+                    aria-label="Next testimonial"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="contact" className="relative isolate overflow-hidden py-24 sm:py-28">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "linear-gradient(180deg, rgba(14,15,18,0.34), rgba(14,15,18,0.88)), url(https://images.pexels.com/photos/30917792/pexels-photo-30917792.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=2000)",
-            }}
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_25%,rgba(217,75,43,0.18),transparent_20%),radial-gradient(circle_at_18%_38%,rgba(59,91,219,0.16),transparent_24%)]" />
-          <div className="absolute inset-0 blueprint-grid opacity-35" />
+        <section id="contact" className="relative isolate overflow-hidden bg-[#F6EEE3] py-24 sm:py-28">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(200,90,45,0.18),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(184,134,11,0.12),transparent_24%)]" />
+          <div className="absolute inset-0 blueprint-grid opacity-10" />
 
-          <div className="relative mx-auto max-w-[1100px] px-6 text-center sm:px-8">
-            <Reveal className="space-y-8 rounded-[36px] border border-[#7B6F64]/12 bg-[#FBF7F0]/52 px-6 py-14 shadow-[0_30px_90px_rgba(0,0,0,0.34)] backdrop-blur-xl sm:px-10 lg:px-16">
-              <SectionKicker>Ready to Build</SectionKicker>
-              <h2 className="font-display text-4xl leading-none tracking-[-0.03em] text-[#3E3B38] sm:text-7xl">
-                Let’s Build Something That Lasts.
-              </h2>
-              <p className="mx-auto max-w-3xl text-base leading-8 text-[#7B6F64]/88 sm:text-lg">
-                If your project demands architectural control, premium materials, disciplined field execution, and a construction partner comfortable with complexity,
-                we should talk. We build luxury homes, commercial spaces, modern interiors, and structurally demanding environments.
-              </p>
-              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a
-                  href="mailto:studio@strataforgebuild.com"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-[#C85A2D] px-8 py-4 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38] transition duration-300 hover:bg-[#B8860B] hover:shadow-[0_0_40px_rgba(217,75,43,0.24)]"
-                >
-                  studio@strataforgebuild.com
-                </a>
-                <a
-                  href="tel:+16465550184"
-                  className="inline-flex items-center justify-center gap-3 rounded-full border border-[#7B6F64]/18 bg-[#FBF7F0]/38 px-8 py-4 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#3E3B38] backdrop-blur-md transition duration-300 hover:border-[#B8860B]/50 hover:bg-[#F5EFE6]/72"
-                >
-                  +1 (646) 555-0184
-                </a>
+          <div className="relative mx-auto max-w-[1600px] px-6 sm:px-8">
+            <Reveal>
+              <div className="grid gap-10 rounded-[40px] border border-[#D4C4B0] bg-white/90 p-8 shadow-[0_40px_120px_rgba(0,0,0,0.14)] sm:grid-cols-[1.05fr_0.95fr] sm:p-12">
+                <div className="space-y-8">
+                  <div className="inline-flex items-center gap-3 rounded-full border border-[#C85A2D]/20 bg-[#FFF1E4]/80 px-4 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">
+                    Ready to Build
+                  </div>
+                  <h2 className="font-display text-5xl leading-tight tracking-[-0.03em] text-[#C85A2D] sm:text-7xl">
+                    Let’s shape spaces that feel intentional, resilient, and unmistakably premium.
+                  </h2>
+                  <p className="max-w-3xl text-lg leading-8 text-[#7B6F64]/90 sm:text-xl font-bold">
+                    If your project demands architectural control, premium materials, disciplined field execution, and a partner who understands complexity, let’s begin with a conversation.
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <a
+                      href="mailto:contact@cardenasconstructiollc.com"
+                      className="inline-flex items-center justify-center gap-3 rounded-full bg-[#C85A2D] px-8 py-4 text-[0.76rem] uppercase tracking-[0.24em] text-[#3E3B38] transition duration-300 hover:bg-[#B8860B] hover:shadow-[0_0_40px_rgba(217,75,43,0.24)] font-bold"
+                    >
+                      Contact Us
+                    </a>
+                    <a
+                      href="tel:+12014500645"
+                      className="inline-flex items-center justify-center gap-3 rounded-full border border-[#D4C4B0] bg-[#FBF7F0] px-8 py-4 text-[0.76rem] uppercase tracking-[0.24em] text-[#3E3B38] transition duration-300 hover:border-[#C85A2D] hover:bg-[#F5E1D1] font-bold"
+                    >
+                      +1 (201) 450-0645
+                    </a>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-[32px] bg-[#E7DCCB]/70 p-8">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.7),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(200,90,45,0.14),transparent_30%)]" />
+                  <div className="relative h-full space-y-6">
+                    <div className="rounded-[28px] bg-white/85 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+                      <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Office</div>
+                      <div className="mt-4 text-lg text-[#3E3B38] font-bold">Hackensack, NJ</div>
+                      <p className="mt-3 text-lg leading-7 text-[#7B6F64] font-bold">Local HQ with regional service across New Jersey.</p>
+                    </div>
+                    <div className="rounded-[28px] bg-white/85 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+                      <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Availability</div>
+                      <div className="mt-4 text-lg text-[#3E3B38] font-bold">Mon–Sat / 6am–8pm</div>
+                      <p className="mt-3 text-lg leading-7 text-[#7B6F64] font-bold">Responsive planning and rapid mobilization for every new build.</p>
+                    </div>
+                    <div className="rounded-[28px] bg-white/85 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)]">
+                      <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#C85A2D] font-bold">Design Partner</div>
+                      <div className="mt-4 text-lg text-[#3E3B38] font-bold">Architects, developers, homeowners</div>
+                      <p className="mt-3 text-lg leading-7 text-[#7B6F64] font-bold">Collaborating with design teams to preserve intent while building with rigor.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Reveal>
           </div>
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-[#D4C4B0] bg-[#FBF7F0]">
-        <div className="mx-auto max-w-[1440px] px-6 py-12 sm:px-8 lg:px-12">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]">
-            <div className="space-y-5">
-              <div className="flex items-center gap-4">
-                <div className="relative grid h-11 w-11 place-items-center rounded-full border border-[#B8860B]/35 bg-[#F5EFE6]/90">
-                  <span className="absolute h-4 w-px bg-[#C85A2D]" />
-                  <span className="absolute w-4 border-t border-[#B8860B]" />
-                  <span className="text-[0.62rem] font-bold tracking-[0.28em]">SF</span>
+      <footer className="relative z-10 bg-[#1C1A18] text-[#FBF7F0]">
+        <div className="mx-auto max-w-[1920px] px-6 py-20 sm:px-8 lg:px-12">
+          <div className="grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_0.9fr]">
+            <div className="space-y-8">
+              <div className="flex flex-col gap-5">
+                <div className="w-fit rounded-xl sm:rounded-2xl bg-[#FBF7F0]/95 px-5 py-3 shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-[#D4C4B0]/20">
+                  <img
+                    src="/logo1.png"
+                    alt="Cardenas Construction Logo"
+                    className="w-[180px] sm:w-[220px] h-auto object-contain drop-shadow-sm"
+                  />
                 </div>
-                <div>
-                  <div className="text-sm font-semibold uppercase tracking-[0.34em] text-[#3E3B38]">cardenas construction</div>
-                  <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#9B8F80]">Architectural Construction</div>
+                <div className="text-[0.68rem] uppercase tracking-[0.28em] text-[#B8860B] font-bold ml-1">
+                  Premium building services
                 </div>
               </div>
-              <p className="max-w-md text-sm leading-7 text-[#7B6F64]/82">
+              <p className="max-w-md text-lg leading-8 text-[#A89F91] font-bold">
                 Elite construction for luxury homes, commercial environments, modern architectural interiors, and large-scale precision builds.
               </p>
-            </div>
-
-            <div>
-              <div className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9B8F80]">Navigate</div>
-              <div className="space-y-3 text-sm text-[#7B6F64]">
-                <a className="block hover:text-[#3E3B38]" href="#about">
-                  Story
-                </a>
-                <a className="block hover:text-[#3E3B38]" href="#services">
-                  Services
-                </a>
-                <a className="block hover:text-[#3E3B38]" href="#projects">
-                  Projects
-                </a>
-                <a className="block hover:text-[#3E3B38]" href="#contact">
-                  Contact
-                </a>
+              <div className="flex flex-wrap gap-4">
+                {[
+                  ["LinkedIn", "#"],
+                  ["Instagram", "#"],
+                  ["Houzz", "#"],
+                ].map(([label, href]) => (
+                  <a key={label} href={href} className="text-[0.7rem] uppercase tracking-[0.28em] text-[#FBF7F0]/60 transition-colors duration-300 hover:text-[#C85A2D] font-bold">
+                    {label}
+                  </a>
+                ))}
               </div>
             </div>
 
             <div>
-              <div className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9B8F80]">Studios</div>
-              <div className="space-y-3 text-sm text-[#7B6F64]">
-                <div>New York</div>
-                <div>Austin</div>
-                <div>Miami</div>
+              <div className="mb-6 text-[0.72rem] uppercase tracking-[0.3em] text-[#C85A2D] font-bold">Navigate</div>
+              <div className="space-y-4 text-sm text-[#A89F91] font-bold">
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#about">Story</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#services">Services</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#projects">Projects</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#contact">Contact</a>
               </div>
             </div>
 
             <div>
-              <div className="mb-4 text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9B8F80]">Connect</div>
-              <div className="space-y-3 text-sm text-[#7B6F64]">
-                <a className="block hover:text-[#3E3B38]" href="mailto:studio@strataforgebuild.com">
-                  studio@strataforgebuild.com
-                </a>
-                <a className="block hover:text-[#3E3B38]" href="tel:+16465550184">
-                  +1 (646) 555-0184
-                </a>
-                <div>Mon–Fri / 8:00–18:00</div>
+              <div className="mb-6 text-[0.72rem] uppercase tracking-[0.3em] text-[#C85A2D] font-bold">Services</div>
+              <div className="space-y-4 text-sm text-[#A89F91] font-bold">
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#services">Carpet Services</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#services">New Construction</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#services">Remodeling</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="#services">Painting</a>
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-6 text-[0.72rem] uppercase tracking-[0.3em] text-[#C85A2D] font-bold">Connect</div>
+              <div className="space-y-4 text-sm text-[#A89F91] font-bold">
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="mailto:contact@cardenasconstructiollc.com">contact@cardenasconstructiollc.com</a>
+                <a className="block transition-colors duration-300 hover:text-[#FBF7F0]" href="tel:+12014500645">+1 (201) 450-0645</a>
+                <div>Mon–Sat / 6:00–20:00</div>
               </div>
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-4 border-t border-[#D4C4B0] pt-6 text-[0.7rem] uppercase tracking-[0.24em] text-[#9B8F80] sm:flex-row sm:items-center sm:justify-between">
-            <div>© 2026 cardenas construction</div>
-            <div className="flex gap-5">
-              <a href="#home" className="hover:text-[#3E3B38]">
-                Top
-              </a>
-              <a href="#projects" className="hover:text-[#3E3B38]">
-                Case Studies
-              </a>
-              <a href="#contact" className="hover:text-[#3E3B38]">
-                Start a Build
-              </a>
+          <div className="mt-16 flex flex-col gap-6 border-t border-[#FBF7F0]/10 pt-8 text-[0.7rem] uppercase tracking-[0.26em] text-[#A89F91] sm:flex-row sm:items-center sm:justify-between font-bold">
+            <div>Copyright 2026 Cardenas Construction LLC. All Rights Reserved.</div>
+            <div className="flex flex-wrap items-center gap-6">
+              <a href="#home" className="transition-colors duration-300 hover:text-[#FBF7F0]">Top</a>
+              <a href="#projects" className="transition-colors duration-300 hover:text-[#FBF7F0]">Case Studies</a>
+              <a href="#contact" className="transition-colors duration-300 hover:text-[#FBF7F0]">Start a Build</a>
             </div>
           </div>
         </div>

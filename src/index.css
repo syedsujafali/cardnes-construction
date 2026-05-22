@@ -2,17 +2,17 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
-  --primary-bg: #0e0f12;
-  --secondary-bg: #1a1d22;
-  --surface-card: #252a31;
-  --main-text: #f3f1ec;
-  --secondary-text: #9aa3ad;
-  --primary-accent: #d94b2b;
-  --secondary-accent: #3b5bdb;
-  --premium-highlight: #c97b48;
-  --divider: #363d46;
-  --subtle-neutral: #d8d1c5;
+  color-scheme: light;
+  --bg: #F7EFE6;
+  --bg-soft: #FBF7F0;
+  --surface: #FFFFFF;
+  --surface-card: #F2E7D8;
+  --text-primary: #2F2A26;
+  --text-muted: #7B6F64;
+  --accent: #C85A2D;
+  --accent-soft: #F2C6A0;
+  --divider: #D7C6B5;
+  --shadow: rgba(45, 38, 32, 0.12);
 }
 
 html {
@@ -22,11 +22,8 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at top left, rgba(59, 91, 219, 0.12), transparent 24%),
-    radial-gradient(circle at top right, rgba(217, 75, 43, 0.08), transparent 22%),
-    linear-gradient(180deg, #0e0f12 0%, #1a1d22 100%);
-  color: var(--main-text);
+  background: linear-gradient(180deg, #f7efe6 0%, #f0e6d8 100%);
+  color: var(--text-primary);
   font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -38,13 +35,13 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.1;
-  mix-blend-mode: screen;
+  opacity: 0.12;
   background-image:
-    radial-gradient(circle at 18% 16%, rgba(243, 241, 236, 0.18) 0, transparent 2px),
-    radial-gradient(circle at 82% 28%, rgba(59, 91, 219, 0.18) 0, transparent 1.5px),
-    radial-gradient(circle at 64% 78%, rgba(201, 123, 72, 0.14) 0, transparent 2px);
-  background-size: 150px 150px, 210px 210px, 240px 240px;
+    radial-gradient(circle at 14% 18%, rgba(200, 90, 45, 0.16), transparent 22%),
+    radial-gradient(circle at 82% 26%, rgba(203, 157, 124, 0.12), transparent 18%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 160px 160px, 190px 190px, 32px 32px, 32px 32px;
 }
 
 * {
@@ -52,8 +49,8 @@ body::before {
 }
 
 *::selection {
-  background: rgba(217, 75, 43, 0.88);
-  color: #f3f1ec;
+  background: rgba(200, 90, 45, 0.28);
+  color: var(--text-primary);
 }
 
 img,
@@ -80,45 +77,18 @@ a {
 
 .blueprint-grid {
   background-image:
-    linear-gradient(rgba(59, 91, 219, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 91, 219, 0.16) 1px, transparent 1px),
-    linear-gradient(rgba(59, 91, 219, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 91, 219, 0.07) 1px, transparent 1px);
-  background-position: 0 0, 0 0, 34px 34px, 34px 34px;
-  background-size: 68px 68px, 68px 68px, 17px 17px, 17px 17px;
+    linear-gradient(rgba(200, 90, 45, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 90, 45, 0.14) 1px, transparent 1px),
+    linear-gradient(rgba(200, 90, 45, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 90, 45, 0.08) 1px, transparent 1px);
+  background-position: 0 0, 0 0, 32px 32px, 32px 32px;
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
 }
 
-.steel-panel {
-  background:
-    radial-gradient(circle at top right, rgba(217, 75, 43, 0.16), transparent 26%),
-    linear-gradient(145deg, rgba(37, 42, 49, 0.96), rgba(26, 29, 34, 0.96));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.26),
-    0 24px 80px rgba(0, 0, 0, 0.34);
-}
-
-.scan-line {
-  background: linear-gradient(90deg, transparent, rgba(59, 91, 219, 0.18), transparent);
-  filter: blur(1px);
-  animation: scan-horizontal 9s linear infinite;
-}
-
-@keyframes scan-horizontal {
-  0% {
-    transform: translateX(-18%);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.55;
-  }
-  100% {
-    transform: translateX(140%);
-    opacity: 0;
-  }
+.glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -141,11 +111,11 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0e0f12;
+  background: #f7efe6;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  border: 2px solid #0e0f12;
-  background: linear-gradient(180deg, rgba(59, 91, 219, 0.78), rgba(217, 75, 43, 0.78));
+  border: 2px solid #f7efe6;
+  background: linear-gradient(180deg, rgba(200, 90, 45, 0.38), rgba(179, 120, 74, 0.38));
 }
